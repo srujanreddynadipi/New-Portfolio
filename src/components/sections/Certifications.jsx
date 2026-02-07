@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { Award, Calendar, ExternalLink, Sparkles, Medal } from 'lucide-react'
-import { portfolioData } from '../../data/data'
+import { useCertifications } from '../../hooks/usePortfolioData'
+import Spinner from '../ui/Spinner'
 
 // Reusable CertificationCard Component - Enhanced
 const CertificationCard = ({ certification, index }) => {
@@ -95,7 +96,20 @@ const CertificationCard = ({ certification, index }) => {
 }
 
 const Certifications = () => {
-  const { certifications } = portfolioData
+  const { data: certifications, loading, error } = useCertifications()
+
+  // Show loading spinner
+  if (loading) {
+    return (
+      <section id="certifications" className="py-20 px-4 relative overflow-hidden">
+        <div className="max-w-7xl mx-auto relative z-10 flex justify-center items-center min-h-[400px]">
+          <Spinner />
+        </div>
+      </section>
+    )
+  }
+
+  if (error) console.error('Certifications error:', error)
 
   const containerVariants = {
     hidden: { opacity: 0 },

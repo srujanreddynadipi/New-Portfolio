@@ -1,11 +1,13 @@
 import { Outlet } from 'react-router-dom'
 import Navbar from './Navbar'
 import Footer from './Footer'
+import SkipLink from './SkipLink'
 import { motion } from 'framer-motion'
 
 const MainLayout = () => {
   return (
     <div className="min-h-screen flex flex-col relative">
+      <SkipLink />
       {/* Fixed Background Layer */}
       <div className="fixed inset-0 -z-10 bg-gradient-to-br from-primary-50 via-white to-primary-100 dark:from-dark-900 dark:via-dark-800 dark:to-dark-900">
         {/* Animated Background Elements */}
@@ -78,7 +80,7 @@ const MainLayout = () => {
       </div>
 
       <Navbar />
-      <main className="flex-grow pt-16 relative z-0">
+      <main id="main-content" className="flex-grow pt-16 relative z-0">
         <Outlet />
       </main>
       <Footer />

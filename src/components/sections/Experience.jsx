@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { Briefcase, Calendar, MapPin, Sparkles } from 'lucide-react'
-import { portfolioData } from '../../data/data'
+import { useExperience } from '../../hooks/usePortfolioData'
+import Spinner from '../ui/Spinner'
 
 // Reusable TimelineItem Component
 const TimelineItem = ({ item, index, isLast, type }) => {
@@ -98,7 +99,20 @@ const TimelineItem = ({ item, index, isLast, type }) => {
 }
 
 const Experience = () => {
-  const { experience } = portfolioData
+  const { data: experience, loading, error } = useExperience()
+
+  // Show loading spinner
+  if (loading) {
+    return (
+      <section id="experience" className="py-20 px-4 relative overflow-hidden">
+        <div className="max-w-7xl mx-auto relative z-10 flex justify-center items-center min-h-[400px]">
+          <Spinner />
+        </div>
+      </section>
+    )
+  }
+
+  if (error) console.error('Experience error:', error)
 
   // Combine experience and training, sorted by date if available
   const allExperience = [...(experience || [])]

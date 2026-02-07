@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { Code2, Layers, Database, Wrench, Brain, Sparkles } from 'lucide-react'
-import { portfolioData } from '../../data/data'
+import { useSkills } from '../../hooks/usePortfolioData'
+import Spinner from '../ui/Spinner'
 
 // Reusable SkillCard Component
 const SkillCard = ({ icon: Icon, title, skills, index }) => {
@@ -116,7 +117,23 @@ const SkillCard = ({ icon: Icon, title, skills, index }) => {
 }
 
 const Skills = () => {
-  const { skills } = portfolioData
+  const { data: skills, loading, error } = useSkills()
+
+  // Show loading spinner while fetching data
+  if (loading) {
+    return (
+      <section id="skills" className="py-20 px-4 relative overflow-hidden">
+        <div className="max-w-7xl mx-auto relative z-10 flex justify-center items-center min-h-[400px]">
+          <Spinner />
+        </div>
+      </section>
+    )
+  }
+
+  // Show error message if data fetch failed (shouldn't happen due to fallback)
+  if (error) {
+    console.error('Skills error:', error)
+  }
 
   // Category configuration with icons and display names
   const categories = [

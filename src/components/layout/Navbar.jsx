@@ -1,13 +1,15 @@
 import { useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { Menu, X, Moon, Sun } from 'lucide-react'
+import { Menu, X, Moon, Sun, Lock, LogOut, LayoutDashboard } from 'lucide-react'
 import { useTheme } from '../../context/ThemeContext'
+import { useAuth } from '../../context/AuthContext'
 import { useScrollPosition } from '../../hooks/useScrollPosition'
 import { motion, AnimatePresence } from 'framer-motion'
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false)
   const { theme, toggleTheme } = useTheme()
+  const { isAuthenticated, signOut } = useAuth()
   const scrollPosition = useScrollPosition()
   const location = useLocation()
   const navigate = useNavigate()
@@ -33,6 +35,14 @@ const Navbar = () => {
       }
     }
     setIsOpen(false)
+  }
+
+  const handleLogout = async () => {
+    const { success } = await signOut()
+    if (success) {
+      navigate('/')
+      setIsOpen(false)
+    }
   }
 
   const navLinks = [
@@ -96,6 +106,35 @@ const Navbar = () => {
               )
             ))}
             
+            {/* Admin Section */}
+            {isAuthenticated ? (
+              <div className="flex items-center space-x-2">
+                <Link
+                  to="/admin"
+                  className="flex items-center space-x-1 px-3 py-2 rounded-lg text-sm font-medium bg-primary-500 text-white hover:bg-primary-600 transition-colors"
+                >
+                  <LayoutDashboard className="w-4 h-4" />
+                  <span>Dashboard</span>
+                </Link>
+                <button
+                  onClick={handleLogout}
+                  className="p-2 rounded-lg bg-red-500 text-white hover:bg-red-600 transition-colors"
+                  aria-label="Logout"
+                  title="Logout"
+                >
+                  <LogOut className="w-4 h-4" />
+                </button>
+              </div>
+            ) : (
+              <Link
+                to="/admin/login"
+                className="flex items-center space-x-1 px-4 py-2 rounded-lg text-sm font-medium bg-primary-500 text-white hover:bg-primary-600 transition-colors"
+              >
+                <Lock className="w-4 h-4" />
+                <span>Admin Login</span>
+              </Link>
+            )}
+            
             {/* Theme Toggle */}
             <button
               onClick={toggleTheme}
@@ -148,6 +187,36 @@ const Navbar = () => {
             exit={{ opacity: 0, height: 0 }}
             className="md:hidden glass-card"
           >
+              
+              {/* Mobile Admin Section */}
+              {isAuthenticated ? (
+                <>
+                  <Link
+                    to="/admin"
+                    onClick={() => setIsOpen(false)}
+                    className="flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium bg-primary-500 text-white hover:bg-primary-600 transition-colors"
+                  >
+                    <LayoutDashboard className="w-4 h-4" />
+                    <span>Dashboard</span>
+                  </Link>
+                  <button
+                    onClick={handleLogout}
+                    className="flex items-center space-x-2 w-full px-4 py-2 rounded-lg text-sm font-medium bg-red-500 text-white hover:bg-red-600 transition-colors"
+                  >
+                    <LogOut className="w-4 h-4" />
+                    <span>Logout</span>
+                  </button>
+                </>
+              ) : (
+                <Link
+                  to="/admin/login"
+                  onClick={() => setIsOpen(false)}
+                  className="flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium bg-primary-500 text-white hover:bg-primary-600 transition-colors"
+                >
+                  <Lock className="w-4 h-4" />
+                  <span>Admin Login</span>
+                </Link>
+              )}
             <div className="px-4 py-4 space-y-3">
               {navLinks.map((link) => (
                 link.path.includes('#') ? (

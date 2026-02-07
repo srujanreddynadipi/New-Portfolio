@@ -10,7 +10,11 @@ import {
   Menu,
   X,
   Moon,
-  Sun
+  Sun,
+  Code,
+  Briefcase,
+  Award,
+  Trophy
 } from 'lucide-react'
 import { useAuth } from '../../context/AuthContext'
 import { useTheme } from '../../context/ThemeContext'
@@ -27,6 +31,10 @@ const AdminLayout = () => {
     { icon: LayoutDashboard, label: 'Dashboard', path: '/admin' },
     { icon: FolderKanban, label: 'Projects', path: '/admin/projects' },
     { icon: FileText, label: 'Blogs', path: '/admin/blogs' },
+    { icon: Code, label: 'Skills', path: '/admin/skills' },
+    { icon: Briefcase, label: 'Experience', path: '/admin/experience' },
+    { icon: Award, label: 'Certifications', path: '/admin/certifications' },
+    { icon: Trophy, label: 'Achievements', path: '/admin/achievements' },
     { icon: MessageSquare, label: 'Messages', path: '/admin/messages' },
     { icon: Upload, label: 'Resume', path: '/admin/resume' },
   ]
@@ -39,7 +47,15 @@ const AdminLayout = () => {
   const isActive = (path) => location.pathname === path
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-dark-900">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-dark-900 dark:to-dark-800">
+      {/* Mobile Overlay */}
+      {isSidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+          onClick={() => setIsSidebarOpen(false)}
+        />
+      )}
+
       {/* Sidebar */}
       <AnimatePresence>
         {isSidebarOpen && (
@@ -47,40 +63,67 @@ const AdminLayout = () => {
             initial={{ x: -300 }}
             animate={{ x: 0 }}
             exit={{ x: -300 }}
-            className="fixed left-0 top-0 h-full w-64 glass-card z-50 overflow-y-auto"
+            transition={{ type: "spring", damping: 25, stiffness: 200 }}
+            className="fixed left-0 top-0 h-full w-72 bg-white dark:bg-dark-800 shadow-2xl z-50 overflow-y-auto border-r border-gray-200 dark:border-dark-700"
           >
             <div className="p-6">
+              {/* Header */}
               <div className="flex items-center justify-between mb-8">
-                <h2 className="text-2xl font-bold text-gradient">Admin Panel</h2>
+                <div>
+                  <h2 className="text-2xl font-bold bg-gradient-to-r from-primary-600 to-purple-600 bg-clip-text text-transparent">
+                    Admin Panel
+                  </h2>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Portfolio Management</p>
+                </div>
                 <button
                   onClick={() => setIsSidebarOpen(false)}
-                  className="lg:hidden p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-dark-700"
+                  className="lg:hidden p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-dark-700 transition-colors"
                 >
-                  <X className="w-5 h-5" />
+                  <X className="w-5 h-5 text-gray-600 dark:text-gray-400" />
                 </button>
               </div>
 
-              <nav className="space-y-2">
+              {/* Navigation */}
+              <nav className="space-y-1.5">
                 {menuItems.map((item) => (
                   <Link
                     key={item.path}
                     to={item.path}
-                    className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-all ${
+                    onClick={() => window.innerWidth < 1024 && setIsSidebarOpen(false)}
+                    className={`group flex items-center space-x-3 px-4 py-3.5 rounded-xl transition-all duration-200 ${
                       isActive(item.path)
-                        ? 'bg-primary-500 text-white shadow-lg'
-                        : 'text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-dark-700'
+                        ? 'bg-gradient-to-r from-primary-500 to-purple-500 text-white shadow-lg shadow-primary-500/30'
+                        : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-dark-700'
                     }`}
                   >
-                    <item.icon className="w-5 h-5" />
+                    <item.icon className={`w-5 h-5 ${isActive(item.path) ? '' : 'group-hover:scale-110 transition-transform'}`} />
                     <span className="font-medium">{item.label}</span>
                   </Link>
                 ))}
               </nav>
 
-              <div className="mt-8 pt-8 border-t border-gray-200 dark:border-dark-600">
+              {/* Bottom Section */}
+              <div className="mt-8 pt-6 border-t border-gray-200 dark:border-dark-700 space-y-3">
+                <button
+                  onClick={toggleTheme}
+                  className="flex items-center space-x-3 px-4 py-3 rounded-xl text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-dark-700 w-full transition-all"
+                >
+                  {theme === 'light' ? (
+                    <>
+                      <Moon className="w-5 h-5" />
+                      <span className="font-medium">Dark Mode</span>
+                    </>
+                  ) : (
+                    <>
+                      <Sun className="w-5 h-5" />
+                      <span className="font-medium">Light Mode</span>
+                    </>
+                  )}
+                </button>
+                
                 <button
                   onClick={handleSignOut}
-                  className="flex items-center space-x-3 px-4 py-3 rounded-lg text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 w-full transition-all"
+                  className="flex items-center space-x-3 px-4 py-3 rounded-xl text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 w-full transition-all"
                 >
                   <LogOut className="w-5 h-5" />
                   <span className="font-medium">Sign Out</span>
@@ -92,42 +135,32 @@ const AdminLayout = () => {
       </AnimatePresence>
 
       {/* Main Content */}
-      <div className={`transition-all duration-300 ${isSidebarOpen ? 'lg:ml-64' : 'ml-0'}`}>
+      <div className={`transition-all duration-300 ${isSidebarOpen ? 'lg:ml-72' : 'ml-0'}`}>
         {/* Top Bar */}
-        <header className="glass-card sticky top-0 z-40">
+        <header className="sticky top-0 z-30 bg-white/80 dark:bg-dark-800/80 backdrop-blur-xl border-b border-gray-200 dark:border-dark-700 shadow-sm">
           <div className="px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
             <button
               onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-              className="p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-dark-700 transition-colors"
+              className="p-2.5 rounded-xl hover:bg-gray-100 dark:hover:bg-dark-700 transition-colors touch-manipulation"
+              aria-label="Toggle sidebar"
             >
-              <Menu className="w-6 h-6" />
+              <Menu className="w-6 h-6 text-gray-700 dark:text-gray-300" />
             </button>
 
-            <div className="flex items-center space-x-4">
-              <button
-                onClick={toggleTheme}
-                className="p-2 rounded-lg bg-gray-200 dark:bg-dark-700 hover:bg-gray-300 dark:hover:bg-dark-600 transition-colors"
-                aria-label="Toggle theme"
-              >
-                {theme === 'light' ? (
-                  <Moon className="w-5 h-5" />
-                ) : (
-                  <Sun className="w-5 h-5" />
-                )}
-              </button>
-
+            <div className="flex items-center space-x-2 sm:space-x-4">
               <Link
                 to="/"
-                className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary-500 transition-colors"
+                className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors rounded-xl hover:bg-gray-100 dark:hover:bg-dark-700"
               >
-                View Site
+                <span className="hidden sm:inline">View Site</span>
+                <span className="sm:hidden">Site</span>
               </Link>
             </div>
           </div>
         </header>
 
         {/* Page Content */}
-        <main className="p-4 sm:p-6 lg:p-8">
+        <main className="min-h-[calc(100vh-73px)]">
           <Outlet />
         </main>
       </div>

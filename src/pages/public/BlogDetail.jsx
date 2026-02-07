@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import { Calendar, Clock, ArrowLeft, Tag, Share2 } from 'lucide-react'
 import { blogService } from '../../services/blogService'
 import Spinner from '../../components/ui/Spinner'
+import SEO from '../../components/common/SEO'
 
 const BlogDetail = () => {
   const { slug } = useParams()
@@ -78,6 +79,14 @@ const BlogDetail = () => {
 
   return (
     <div className="min-h-screen py-20 px-4 bg-gradient-to-b from-white to-primary-50 dark:from-dark-900 dark:to-dark-800 relative overflow-hidden">
+      <SEO
+        title={blog?.title || 'Blog Post'}
+        description={blog?.excerpt || blog?.content?.substring(0, 160) || 'Read this blog post'}
+        keywords={blog?.tags || ['blog', 'article']}
+        image={blog?.image}
+        type="article"
+        url={`/blog/${slug}`}
+      />
       {/* Background Decoration */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <motion.div

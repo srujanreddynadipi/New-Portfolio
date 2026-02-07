@@ -2,6 +2,10 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Mail, MapPin, Phone, Send } from 'lucide-react'
 import { contactService } from '../../services/contactService'
+import { useToast } from '../../context/ToastContext'
+import { rateLimiter } from '../../utils/security'
+import { debounce } from '../../utils/performance'
+import SEO from '../../components/common/SEO'
 import Card from '../../components/ui/Card'
 import Input from '../../components/ui/Input'
 import Textarea from '../../components/ui/Textarea'
@@ -15,32 +19,82 @@ const Contact = () => {
     message: '',
   })
   const [loading, setLoading] = useState(false)
-  const [success, setSuccess] = useState(false)
-  const [error, setError] = useState(null)
+  const [errors, setErrors] = useState({})
+  const toast = useToast()
+
+  // Debounced validation
+  const validateField = debounce((field, value) => {
+    const newErrors = { ...errors }
+
+    switch (field) {
+      case 'name':
+        if (value.length < 2) {
+          newErrors.name = 'Name must be at least 2 characters'
+        } else {
+          delete newErrors.name
+        }
+        break
+      case 'email':
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+        if (!emailRegex.test(value)) {
+          newErrors.email = 'Invalid email address'
+        } else {
+          delete newErrors.email
+        }
+        break
+      case 'subject':
+        if (value.length < 3) {
+          newErrors.subject = 'Subject must be at least 3 characters'
+        } else {
+          delete newErrors.subject
+        }
+        break
+      case 'message':
+        if (value.length < 10) {
+          newErrors.message = 'Message must be at least 10 characters'
+        } else {
+          delete newErrors.message
+        }
+        break
+    }
+
+    setErrors(newErrors)
+  }, 300)
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    })
+    const { name, value } = e.target
+    setFormData(prev => ({ ...prev, [name]: value }))
+    validateField(name, value)
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    setLoading(true)
-    setError(null)
-    setSuccess(false)
 
-    const { error } = await contactService.createMessage(formData)
-    
-    if (error) {
-      setError(error)
-    } else {
-      setSuccess(true)
-      setFormData({ name: '', email: '', subject: '', message: '' })
+    // Rate limiting check
+    if (!rateLimiter('contact-form', 3, 300000)) {
+      toast.error('Too many submissions. Please try again in 5 minutes.')
+      return
     }
+
+    // Validation check
+    if (Object.keys(errors).length > 0) {
+      toast.warning('Please fix the errors before submitting')
+      return
+    }
+
+    setLoading(true)
+
+    const { data, error } = await contactService.createMessage(formData)
     
     setLoading(false)
+
+    if (error) {
+      toast.error(error)
+    } else {
+      toast.success('Message sent successfully! I\'ll get back to you soon.')
+      setFormData({ name: '', email: '', subject: '', message: '' })
+      setErrors({})
+    }
   }
 
   const contactInfo = [
@@ -65,14 +119,20 @@ const Contact = () => {
   ]
 
   return (
-    <div className="min-h-screen py-20 px-4">
-      <div className="max-w-7xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-16"
-        >
-          <h1 className="section-title">Get In Touch</h1>
+    <>
+      <SEO
+        title="Contact Me"
+        description="Get in touch with me for collaborations, opportunities, or just to say hello. I'd love to hear from you!"
+        keywords={['contact', 'email', 'collaboration', 'work together']}
+      />
+      <div className="min-h-screen py-20 px-4">
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-center mb-16"
+          >
+            <h1 className="section-title">Get In Touch</h1>
           <p className="section-subtitle">
             Have a question or want to work together? Drop me a message!
           </p>
@@ -195,6 +255,7 @@ const Contact = () => {
         </div>
       </div>
     </div>
+    </>
   )
 }
 

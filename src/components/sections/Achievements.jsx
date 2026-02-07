@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { Trophy, Star, Calendar, Sparkles, Award } from 'lucide-react'
-import { portfolioData } from '../../data/data'
+import { useAchievements } from '../../hooks/usePortfolioData'
+import Spinner from '../ui/Spinner'
 
 // Reusable AchievementCard Component - Enhanced
 const AchievementCard = ({ achievement, index }) => {
@@ -88,7 +89,20 @@ const AchievementCard = ({ achievement, index }) => {
 }
 
 const Achievements = () => {
-  const { achievements } = portfolioData
+  const { data: achievements, loading, error } = useAchievements()
+
+  // Show loading spinner
+  if (loading) {
+    return (
+      <section id="achievements" className="py-20 px-4 relative overflow-hidden">
+        <div className="max-w-7xl mx-auto relative z-10 flex justify-center items-center min-h-[400px]">
+          <Spinner />
+        </div>
+      </section>
+    )
+  }
+
+  if (error) console.error('Achievements error:', error)
 
   const containerVariants = {
     hidden: { opacity: 0 },

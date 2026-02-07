@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Github, ExternalLink, X, Calendar, Users, Code, Sparkles, Rocket, ChevronLeft, ChevronRight } from 'lucide-react'
-import { portfolioData } from '../../data/data'
+import { useProjects } from '../../hooks/usePortfolioData'
+import Spinner from '../ui/Spinner'
 
 // Project Card Component - Enhanced
 const ProjectCard = ({ project, onClick, index }) => {
@@ -404,7 +405,20 @@ const ProjectModal = ({ project, onClose }) => {
 
 const Projects = () => {
   const [selectedProject, setSelectedProject] = useState(null)
-  const { projects } = portfolioData
+  const { data: projects, loading, error } = useProjects()
+
+  // Show loading spinner
+  if (loading) {
+    return (
+      <section id="projects" className="py-20 px-4 relative overflow-hidden">
+        <div className="max-w-7xl mx-auto relative z-10 flex justify-center items-center min-h-[400px]">
+          <Spinner />
+        </div>
+      </section>
+    )
+  }
+
+  if (error) console.error('Projects error:', error)
 
   const containerVariants = {
     hidden: { opacity: 0 },

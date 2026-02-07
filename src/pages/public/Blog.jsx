@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import { Calendar, Clock, ArrowRight, BookOpen } from 'lucide-react'
 import { blogService } from '../../services/blogService'
 import Spinner from '../../components/ui/Spinner'
+import SEO from '../../components/common/SEO'
 
 const Blog = () => {
   const [blogs, setBlogs] = useState([])
@@ -43,6 +44,12 @@ const Blog = () => {
 
   return (
     <div className="min-h-screen py-20 px-4 bg-gradient-to-b from-white to-primary-50 dark:from-dark-900 dark:to-dark-800 relative overflow-hidden">
+      <SEO
+        title="Blog"
+        description="Read articles about web development, programming, and technology"
+        keywords={['blog', 'web development', 'programming', 'technology', 'tutorials']}
+        type="blog"
+      />
       {/* Background Decoration */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <motion.div

@@ -87,7 +87,7 @@ const Hero = () => {
   }
 
   return (
-    <section className="min-h-screen flex items-center justify-center py-20 px-4 relative overflow-hidden">
+    <section className="relative min-h-screen flex items-center justify-center py-20 pb-32 px-4 overflow-visible z-50">
       <motion.div 
         style={{ y }}
         className="max-w-7xl mx-auto w-full relative z-10"
@@ -283,7 +283,7 @@ const Hero = () => {
           {/* Right Side - Profile Image - Enhanced */}
           <motion.div
             variants={imageVariants}
-            className="relative flex items-center justify-center"
+            className="relative flex items-center justify-center z-40 py-8"
           >
             {/* Multi-Layer Glow Effect */}
             <motion.div
@@ -328,9 +328,9 @@ const Hero = () => {
                 repeat: Infinity,
                 ease: 'easeInOut',
               }}
-              className="relative z-10"
+              className="relative z-50"
             >
-              <div className="w-72 h-72 sm:w-80 sm:h-80 lg:w-96 lg:h-96 rounded-full glass-card p-4 shadow-2xl relative">
+              <div className="w-72 h-72 sm:w-80 sm:h-80 lg:w-96 lg:h-96 rounded-full glass-card p-4 shadow-2xl relative overflow-hidden z-50">
                 {/* Rotating Gradient Border */}
                 <motion.div
                   animate={{ rotate: 360 }}
@@ -339,46 +339,49 @@ const Hero = () => {
                     repeat: Infinity,
                     ease: 'linear',
                   }}
-                  className="absolute inset-0 rounded-full bg-gradient-to-r from-primary-400 via-primary-600 to-primary-400 dark:from-primary-500 dark:via-primary-700 dark:to-primary-500 p-1"
+                  className="absolute inset-0 rounded-full bg-gradient-to-r from-primary-400 via-primary-600 to-primary-400 dark:from-primary-500 dark:via-primary-700 dark:to-primary-500"
                   style={{ padding: '4px' }}
                 >
                   <div className="w-full h-full rounded-full bg-white dark:bg-dark-800" />
                 </motion.div>
 
-                <div className="w-full h-full rounded-full bg-gradient-to-br from-primary-200 to-primary-400 dark:from-primary-700 dark:to-primary-900 flex items-center justify-center overflow-hidden relative z-10">
+                {/* Image Container */}
+                <div className="absolute inset-4 rounded-full overflow-hidden bg-gradient-to-br from-primary-200 to-primary-400 dark:from-primary-700 dark:to-primary-900 z-20">
                   {metadata.profileImage ? (
                     <motion.img
-                      whileHover={{ scale: 1.1 }}
+                      whileHover={{ scale: 1.05 }}
                       transition={{ duration: 0.4 }}
                       src={metadata.profileImage}
                       alt={hero.name}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-cover object-center"
                     />
                   ) : (
-                    <div className="text-center p-8">
-                      <motion.div
-                        animate={{ rotate: [0, 360] }}
-                        transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
-                      >
-                        <Code2 className="w-24 h-24 text-white/80 mx-auto mb-4" />
-                      </motion.div>
-                      <p className="text-white/90 text-2xl font-bold tracking-wider">
-                        {hero.name.split(' ').map(n => n[0]).join('')}
-                      </p>
+                    <div className="w-full h-full flex items-center justify-center text-center p-8">
+                      <div>
+                        <motion.div
+                          animate={{ rotate: [0, 360] }}
+                          transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
+                        >
+                          <Code2 className="w-24 h-24 text-white/80 mx-auto mb-4" />
+                        </motion.div>
+                        <p className="text-white/90 text-2xl font-bold tracking-wider">
+                          {hero.name.split(' ').map(n => n[0]).join('')}
+                        </p>
+                      </div>
                     </div>
                   )}
-
-                  {/* Inner Decorative Ring */}
-                  <motion.div
-                    animate={{ rotate: -360 }}
-                    transition={{
-                      duration: 25,
-                      repeat: Infinity,
-                      ease: 'linear',
-                    }}
-                    className="absolute inset-8 border-4 border-dashed border-white/30 rounded-full"
-                  />
                 </div>
+
+                {/* Inner Decorative Ring */}
+                <motion.div
+                  animate={{ rotate: -360 }}
+                  transition={{
+                    duration: 25,
+                    repeat: Infinity,
+                    ease: 'linear',
+                  }}
+                  className="absolute inset-12 border-4 border-dashed border-white/30 rounded-full pointer-events-none z-30"
+                />
               </div>
             </motion.div>
 

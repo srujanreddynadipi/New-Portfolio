@@ -122,7 +122,7 @@ const Skills = () => {
   // Show loading spinner while fetching data
   if (loading) {
     return (
-      <section id="skills" className="py-20 px-4 relative overflow-hidden">
+      <section id="skills" className="py-20 px-4 relative z-0">
         <div className="max-w-7xl mx-auto relative z-10 flex justify-center items-center min-h-[400px]">
           <Spinner />
         </div>
@@ -182,7 +182,7 @@ const Skills = () => {
   return (
     <section
       id="skills"
-      className="py-20 px-4 relative overflow-hidden"
+      className="py-20 px-4 relative z-0"
     >
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Section Header - Enhanced */}

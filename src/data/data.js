@@ -1,3 +1,6 @@
+// Import profile image
+import profileImage from './images/Profile/Profile.jpeg'
+
 // Import project images
 import crimenetImg from './images/CrimeNet/Screenshot 2025-11-06 101238.png'
 import echoVerseImg from './images/Echoverse/Screenshot 2025-08-29 181834.png'
@@ -320,6 +323,6 @@ export const portfolioData = {
     lastUpdated: "2026-02-06",
     version: "1.0.0",
     resumeUrl: null, // Will be updated when resume is uploaded
-    profileImage: null // Will be updated when image is added
+    profileImage: profileImage // Profile image for hero section
   }
 }

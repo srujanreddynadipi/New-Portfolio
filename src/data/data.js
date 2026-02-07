@@ -1,18 +1,5 @@
-// Import profile image
-import profileImage from './images/Profile/Profile.jpeg'
-
-// Import project images
-import crimenetImg from './images/CrimeNet/Screenshot 2025-11-06 101238.png'
-import echoVerseImg from './images/Echoverse/Screenshot 2025-08-29 181834.png'
-import echoVerse1 from './images/Echoverse/Screenshot 2025-11-06 101238.png'
-import echoVerse2 from './images/Echoverse/Screenshot 2025-11-06 111445.png'
-import echoVerse3 from './images/Echoverse/Screenshot 2025-11-06 113800.png'
-import echoVerse4 from './images/Echoverse/Screenshot 2025-11-06 113826.png'
-import khushiInteriorsImg from './images/KhushiInteriors/Screenshot 2026-01-25 082602.png'
-import khushiInteriors1 from './images/KhushiInteriors/Screenshot 2026-01-25 082639.png'
-import khushiInteriors2 from './images/KhushiInteriors/Screenshot 2026-01-25 082738.png'
-import khushiInteriors3 from './images/KhushiInteriors/Screenshot 2026-01-25 103309.png'
-import khushiInteriors4 from './images/KhushiInteriors/Screenshot 2026-01-25 103347.png'
+// Portfolio data configuration
+// Projects and images are managed through Supabase backend
 
 export const portfolioData = {
   hero: {
@@ -108,87 +95,8 @@ export const portfolioData = {
     ]
   },
 
-  projects: [
-    {
-      id: 1,
-      title: "CrimeNet – Full-Stack Public Safety Platform",
-      slug: "crimenet-public-safety-platform",
-      description: "Production-ready crime reporting platform with role-based dashboards for Citizens, Police, and Admins. Features include real-time crime reporting, officer assignment workflows, JWT authentication, and comprehensive analytics.",
-      image: crimenetImg,
-      tech: ["React", "Spring Boot", "Firebase Auth", "Firestore", "Docker", "CI/CD", "Tailwind CSS", "JWT"],
-      features: [
-        "Built 30+ RESTful APIs for complete CRUD operations",
-        "Implemented Citizen, Police, and Admin dashboards with role-based access",
-        "JWT security and Firebase authentication integration",
-        "Responsive UI using React and Tailwind CSS",
-        "Officer assignment workflows with real-time updates",
-        "Analytics dashboard for crime statistics and trends",
-        "Dockerized application with CI/CD pipeline deployment"
-      ],
-      githubUrl: "https://github.com/srujanreddynadipi/crimenet",
-      liveUrl: null,
-      category: "Full Stack",
-      status: "Completed",
-      startDate: "2025",
-      endDate: "2025"
-    },
-    {
-      id: 2,
-      title: "EchoVerse – AI Audiobook Generator",
-      slug: "echoverse-ai-audiobook-generator",
-      description: "AI-powered audiobook generation platform that converts PDF, Word documents, and text files into high-quality audio narration using IBM Watson Text-to-Speech and HuggingFace models.",
-      image: echoVerseImg,
-      images: [echoVerseImg, echoVerse1, echoVerse2, echoVerse3, echoVerse4],
-      tech: ["React", "Node.js", "MySQL", "IBM Watson TTS", "HuggingFace", "AI/ML"],
-      features: [
-        "Convert PDF, Word, and Text files to audio format",
-        "Multi-voice narration support with different character voices",
-        "Automatic chapter segmentation and bookmarking",
-        "User-friendly interfaces for Admin, Student, and Elderly users",
-        "Admin analytics dashboard for usage statistics",
-        "Progress tracking and playback controls",
-        "Download and share generated audiobooks"
-      ],
-      githubUrl: "https://github.com/srujanreddynadipi/echoverse",
-      liveUrl: null,
-      category: "AI/ML",
-      status: "Completed",
-      startDate: "2024",
-      endDate: "2025"
-    },
-    {
-      id: 3,
-      title: "Kushi Interiors – Full-Stack Interior Design Website",
-      slug: "kushi-interiors-website",
-      description: "Production-grade, full-stack interior design website with admin dashboard for my first freelancing client. Features modern responsive design, project gallery management, testimonial system, secure authentication, and comprehensive analytics.",
-      image: khushiInteriorsImg,
-      images: [khushiInteriorsImg, khushiInteriors1, khushiInteriors2, khushiInteriors3, khushiInteriors4],
-      tech: ["React 19", "TypeScript", "Tailwind CSS", "Supabase", "PostgreSQL", "Vercel", "Framer Motion", "Sentry", "Google Analytics 4"],
-      features: [
-        "Modern responsive website with admin dashboard",
-        "Project gallery & testimonial management system",
-        "Secure authentication & content management",
-        "Contact form with email integration",
-        "SEO optimized with sitemap, meta tags, and structured data",
-        "Real-time error tracking with Sentry integration",
-        "Google Analytics 4 for visitor behavior insights",
-        "< 2s page load time with 90+ performance score",
-        "Enterprise-level security headers & HTTPS",
-        "WCAG accessibility compliant",
-        "PostgreSQL with Row Level Security (RLS)",
-        "Code splitting & lazy loading optimization",
-        "Automated CI/CD pipeline with Vercel",
-        "A+ security rating",
-        "100% mobile responsive"
-      ],
-      githubUrl: null,
-      liveUrl: "https://lnkd.in/gyhMqrHZ",
-      category: "Full Stack",
-      status: "Completed",
-      startDate: "2025",
-      endDate: "2025"
-    }
-  ],
+  // Projects are now managed through Supabase backend
+  // Static project data removed - use projectService.js to fetch from database
 
   experience: [
     {
@@ -323,6 +231,6 @@ export const portfolioData = {
     lastUpdated: "2026-02-06",
     version: "1.0.0",
     resumeUrl: null, // Will be updated when resume is uploaded
-    profileImage: profileImage // Profile image for hero section
+    profileImage: "/projects/Profile.jpeg" // Profile image for hero section
   }
 }

@@ -32,10 +32,15 @@ const ProjectCard = ({ project, onClick, index }) => {
             <img
               src={project.image}
               alt={project.title}
-              className="w-full h-full object-cover group-hover:scale-125 transition-transform duration-700"
+              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 relative z-10"
+              onError={(e) => {
+                console.error('Image failed to load:', project.image)
+                e.target.style.display = 'none'
+              }}
+              loading="lazy"
             />
             {/* Image Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-300" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent opacity-40 group-hover:opacity-60 transition-opacity duration-300 z-20" />
           </>
         ) : (
           <div className="absolute inset-0 flex items-center justify-center">

@@ -69,7 +69,11 @@ const Contact = () => {
 
     try {
       // Submit to Supabase
-      await contactService.createContact(formData)
+      const { data, error } = await contactService.createMessage(formData)
+
+      if (error) {
+        throw new Error(error)
+      }
 
       // Success
       setStatus('success')

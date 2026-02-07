@@ -84,16 +84,22 @@ const Contact = () => {
 
     setLoading(true)
 
-    const { data, error } = await contactService.createMessage(formData)
-    
-    setLoading(false)
+    try {
+      const { data, error } = await contactService.createMessage(formData)
+      
+      setLoading(false)
 
-    if (error) {
-      toast.error(error)
-    } else {
-      toast.success('Message sent successfully! I\'ll get back to you soon.')
-      setFormData({ name: '', email: '', subject: '', message: '' })
-      setErrors({})
+      if (error) {
+        toast.error(error)
+      } else {
+        toast.success('Message sent successfully! I\'ll get back to you soon.')
+        setFormData({ name: '', email: '', subject: '', message: '' })
+        setErrors({})
+      }
+    } catch (err) {
+      setLoading(false)
+      console.error('Contact form error:', err)
+      toast.error('Failed to send message. Please try again or contact directly via email.')
     }
   }
 

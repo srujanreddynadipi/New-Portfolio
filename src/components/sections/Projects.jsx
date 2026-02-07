@@ -135,11 +135,11 @@ const ProjectCard = ({ project, onClick, index }) => {
         {/* Footer - Enhanced */}
         <div className="flex items-center justify-between pt-5 border-t-2 border-gray-200 dark:border-gray-700">
           <div className="flex gap-4">
-            {project.githubUrl && (
+            {(project.githubUrl || project.github_url) && (
               <motion.a
                 whileHover={{ scale: 1.15, rotate: 5 }}
                 whileTap={{ scale: 0.95 }}
-                href={project.githubUrl}
+                href={project.githubUrl || project.github_url}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={(e) => e.stopPropagation()}
@@ -149,11 +149,11 @@ const ProjectCard = ({ project, onClick, index }) => {
                 <Github className="w-6 h-6" />
               </motion.a>
             )}
-            {project.liveUrl && (
+            {(project.liveUrl || project.live_url) && (
               <motion.a
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
-                href={project.liveUrl}
+                href={project.liveUrl || project.live_url}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={(e) => e.stopPropagation()}
@@ -373,11 +373,11 @@ const ProjectModal = ({ project, onClose }) => {
 
               {/* Links */}
               <div className="flex flex-wrap gap-4 pt-6 border-t-2 border-gray-200 dark:border-gray-700 mt-2">
-                {project.liveUrl && (
+                {(project.liveUrl || project.live_url) && (
                   <motion.a
                     whileHover={{ scale: 1.05, y: -2 }}
                     whileTap={{ scale: 0.95 }}
-                    href={project.liveUrl}
+                    href={project.liveUrl || project.live_url}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex-1 btn-primary flex items-center justify-center gap-2 min-w-[200px] shadow-lg hover:shadow-xl"
@@ -386,11 +386,11 @@ const ProjectModal = ({ project, onClose }) => {
                     Visit Live Site
                   </motion.a>
                 )}
-                {project.githubUrl && (
+                {(project.githubUrl || project.github_url) && (
                   <motion.a
                     whileHover={{ scale: 1.05, y: -2 }}
                     whileTap={{ scale: 0.95 }}
-                    href={project.githubUrl}
+                    href={project.githubUrl || project.github_url}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex-1 btn-secondary flex items-center justify-center gap-2 min-w-[200px] shadow-lg hover:shadow-xl"

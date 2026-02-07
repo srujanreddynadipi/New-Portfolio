@@ -10,6 +10,13 @@
 
   html {
     @apply scroll-smooth;
+    scroll-behavior: smooth;
+  }
+
+  /* Ensure fixed backgrounds work properly */
+  body,
+  #root {
+    min-height: 100vh;
   }
 }
 

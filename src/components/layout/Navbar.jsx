@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { Menu, X, Moon, Sun } from 'lucide-react'
 import { useTheme } from '../../context/ThemeContext'
 import { useScrollPosition } from '../../hooks/useScrollPosition'
@@ -10,9 +10,39 @@ const Navbar = () => {
   const { theme, toggleTheme } = useTheme()
   const scrollPosition = useScrollPosition()
   const location = useLocation()
+  const navigate = useNavigate()
+
+  const handleNavClick = (path) => {
+    if (path.includes('#')) {
+      const [route, hash] = path.split('#')
+      if (location.pathname === route || route === '/') {
+        // Already on the page, just scroll
+        const element = document.getElementById(hash)
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        }
+      } else {
+        // Navigate to home first, then scroll
+        navigate(route)
+        setTimeout(() => {
+          const element = document.getElementById(hash)
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+          }
+        }, 100)
+      }
+    }
+    setIsOpen(false)
+  }
 
   const navLinks = [
     { name: 'Home', path: '/' },
+    { name: 'Skills', path: '/#skills' },
+    { name: 'Experience', path: '/#experience' },
+    { name: 'Projects', path: '/#projects' },
+    { name: 'Education', path: '/#education' },
+    { name: 'Certifications', path: '/#certifications' },
+    { name: 'Achievements', path: '/#achievements' },
     { name: 'Blog', path: '/blog' },
     { name: 'Contact', path: '/contact' },
   ]
@@ -33,23 +63,37 @@ const Navbar = () => {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
-            <span className="text-2xl font-bold text-gradient">Portfolio</span>
+            <span className="text-2xl font-bold text-gradient">Srujan Reddy</span>
           </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
             {navLinks.map((link) => (
-              <Link
-                key={link.path}
-                to={link.path}
-                className={`text-sm font-medium transition-colors ${
-                  isActive(link.path)
-                    ? 'text-primary-600 dark:text-primary-400'
-                    : 'text-gray-700 dark:text-gray-300 hover:text-primary-500'
-                }`}
-              >
-                {link.name}
-              </Link>
+              link.path.includes('#') ? (
+                <button
+                  key={link.path}
+                  onClick={() => handleNavClick(link.path)}
+                  className={`text-sm font-medium transition-colors ${
+                    location.hash === `#${link.path.split('#')[1]}`
+                      ? 'text-primary-600 dark:text-primary-400'
+                      : 'text-gray-700 dark:text-gray-300 hover:text-primary-500'
+                  }`}
+                >
+                  {link.name}
+                </button>
+              ) : (
+                <Link
+                  key={link.path}
+                  to={link.path}
+                  className={`text-sm font-medium transition-colors ${
+                    isActive(link.path)
+                      ? 'text-primary-600 dark:text-primary-400'
+                      : 'text-gray-700 dark:text-gray-300 hover:text-primary-500'
+                  }`}
+                >
+                  {link.name}
+                </Link>
+              )
             ))}
             
             {/* Theme Toggle */}
@@ -106,18 +150,32 @@ const Navbar = () => {
           >
             <div className="px-4 py-4 space-y-3">
               {navLinks.map((link) => (
-                <Link
-                  key={link.path}
-                  to={link.path}
-                  onClick={() => setIsOpen(false)}
-                  className={`block px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                    isActive(link.path)
-                      ? 'bg-primary-500 text-white'
-                      : 'text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-dark-700'
-                  }`}
-                >
-                  {link.name}
-                </Link>
+                link.path.includes('#') ? (
+                  <button
+                    key={link.path}
+                    onClick={() => handleNavClick(link.path)}
+                    className={`block w-full text-left px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                      location.hash === `#${link.path.split('#')[1]}`
+                        ? 'bg-primary-500 text-white'
+                        : 'text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-dark-700'
+                    }`}
+                  >
+                    {link.name}
+                  </button>
+                ) : (
+                  <Link
+                    key={link.path}
+                    to={link.path}
+                    onClick={() => setIsOpen(false)}
+                    className={`block px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                      isActive(link.path)
+                        ? 'bg-primary-500 text-white'
+                        : 'text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-dark-700'
+                    }`}
+                  >
+                    {link.name}
+                  </Link>
+                )
               ))}
             </div>
           </motion.div>

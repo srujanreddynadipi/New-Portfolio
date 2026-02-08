@@ -114,19 +114,19 @@ const Contact = () => {
     {
       icon: Mail,
       title: 'Email',
-      value: 'contact@example.com',
+      value: 'srujanreddynadipi@gmail.com',
       link: 'mailto:contact@example.com',
     },
     {
       icon: Phone,
       title: 'Phone',
-      value: '+1 (555) 123-4567',
-      link: 'tel:+15551234567',
+      value: '+91 7671879587',
+      link: 'tel:7671879587',
     },
     {
       icon: MapPin,
       title: 'Location',
-      value: 'San Francisco, CA',
+      value: 'Hyderabad, India',
       link: null,
     },
   ]

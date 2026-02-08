@@ -71,6 +71,14 @@ const ManageSkills = () => {
     setError(null)
   }
 
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target
+    setFormData(prev => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value
+    }))
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     setSubmitting(true)
@@ -230,9 +238,10 @@ const ManageSkills = () => {
         <form onSubmit={handleSubmit} className="space-y-4">
           <Input
             label="Skill Name"
+            name="name"
             type="text"
             value={formData.name}
-            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+            onChange={handleChange}
             required
             placeholder="e.g., React, Java, Docker"
           />
@@ -242,8 +251,9 @@ const ManageSkills = () => {
               Category
             </label>
             <select
+              name="category"
               value={formData.category}
-              onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+              onChange={handleChange}
               className="w-full px-4 py-2 bg-white dark:bg-dark-800 border border-gray-300 dark:border-dark-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
               required
             >
@@ -261,27 +271,30 @@ const ManageSkills = () => {
             </label>
             <input
               type="range"
+              name="level"
               min="0"
               max="100"
               value={formData.level}
-              onChange={(e) => setFormData({ ...formData, level: parseInt(e.target.value) })}
+              onChange={handleChange}
               className="w-full"
             />
           </div>
 
           <Input
             label="Description (Optional)"
+            name="description"
             type="text"
             value={formData.description}
-            onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+            onChange={handleChange}
             placeholder="Brief description of the skill"
           />
 
           <Input
             label="Display Order"
+            name="display_order"
             type="number"
             value={formData.display_order}
-            onChange={(e) => setFormData({ ...formData, display_order: parseInt(e.target.value) })}
+            onChange={handleChange}
             placeholder="0"
           />
 

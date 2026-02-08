@@ -20,6 +20,14 @@ const AdminLogin = () => {
     navigate('/admin')
   }
 
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value)
+  }
+
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value)
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     setLoading(true)
@@ -58,7 +66,7 @@ const AdminLogin = () => {
                 label="Email"
                 type="email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={handleEmailChange}
                 placeholder="admin@example.com"
                 className="pl-10"
                 required
@@ -71,7 +79,7 @@ const AdminLogin = () => {
                 label="Password"
                 type="password"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={handlePasswordChange}
                 placeholder="••••••••"
                 className="pl-10"
                 required

@@ -88,6 +88,14 @@ const ManageCertifications = () => {
     setError(null)
   }
 
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target
+    setFormData(prev => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value
+    }))
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     setSubmitting(true)
@@ -292,60 +300,67 @@ const ManageCertifications = () => {
         <form onSubmit={handleSubmit} className="space-y-4 max-h-[70vh] overflow-y-auto pr-2">
           <Input
             label="Certification Title"
+            name="title"
             type="text"
             value={formData.title}
-            onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+            onChange={handleChange}
             required
             placeholder="e.g., AWS Certified Solutions Architect"
           />
 
           <Input
             label="Issuer/Organization"
+            name="issuer"
             type="text"
             value={formData.issuer}
-            onChange={(e) => setFormData({ ...formData, issuer: e.target.value })}
+            onChange={handleChange}
             required
             placeholder="e.g., Amazon Web Services"
           />
 
           <Input
             label="Date Obtained"
+            name="date"
             type="text"
             value={formData.date}
-            onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+            onChange={handleChange}
             required
             placeholder="e.g., January 2024 or 2024"
           />
 
           <Input
             label="Credential ID (Optional)"
+            name="credential_id"
             type="text"
             value={formData.credential_id}
-            onChange={(e) => setFormData({ ...formData, credential_id: e.target.value })}
+            onChange={handleChange}
             placeholder="e.g., ABC123XYZ"
           />
 
           <Input
             label="Credential URL (Optional)"
+            name="credential_url"
             type="url"
             value={formData.credential_url}
-            onChange={(e) => setFormData({ ...formData, credential_url: e.target.value })}
+            onChange={handleChange}
             placeholder="https://..."
           />
 
           <Textarea
             label="Description"
+            name="description"
             value={formData.description}
-            onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+            onChange={handleChange}
             placeholder="Brief description of the certification"
             rows={3}
           />
 
           <Input
             label="Skills (comma-separated)"
+            name="skills"
             type="text"
             value={formData.skills}
-            onChange={(e) => setFormData({ ...formData, skills: e.target.value })}
+            onChange={handleChange}
             placeholder="AWS, Cloud Computing, DevOps"
           />
 
@@ -360,9 +375,10 @@ const ManageCertifications = () => {
 
           <Input
             label="Display Order"
+            name="display_order"
             type="number"
             value={formData.display_order}
-            onChange={(e) => setFormData({ ...formData, display_order: parseInt(e.target.value) })}
+            onChange={handleChange}
             placeholder="0"
           />
 

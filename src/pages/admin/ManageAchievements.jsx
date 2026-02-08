@@ -93,6 +93,14 @@ const ManageAchievements = () => {
     setError(null)
   }
 
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target
+    setFormData(prev => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value
+    }))
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     setSubmitting(true)
@@ -264,26 +272,29 @@ const ManageAchievements = () => {
         <form onSubmit={handleSubmit} className="space-y-4">
           <Input
             label="Achievement Title"
+            name="title"
             type="text"
             value={formData.title}
-            onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+            onChange={handleChange}
             required
             placeholder="e.g., Winner of National Hackathon 2024"
           />
 
           <Input
             label="Date"
+            name="date"
             type="text"
             value={formData.date}
-            onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+            onChange={handleChange}
             required
             placeholder="e.g., 2024 or January 2024"
           />
 
           <Textarea
             label="Description"
+            name="description"
             value={formData.description}
-            onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+            onChange={handleChange}
             required
             placeholder="Describe the achievement and its significance"
             rows={4}
@@ -294,8 +305,9 @@ const ManageAchievements = () => {
               Category
             </label>
             <select
+              name="category"
               value={formData.category}
-              onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+              onChange={handleChange}
               className="w-full px-4 py-2 bg-white dark:bg-dark-800 border border-gray-300 dark:border-dark-600 rounded-lg focus:ring-2 focus:ring-primary-500"
               required
             >
@@ -316,7 +328,7 @@ const ManageAchievements = () => {
                   <button
                     key={iconName}
                     type="button"
-                    onClick={() => setFormData({ ...formData, icon: iconName })}
+                    onClick={() => setFormData(prev => ({ ...prev, icon: iconName }))}
                     className={`p-4 rounded-lg border-2 transition-all ${
                       formData.icon === iconName
                         ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20'
@@ -345,9 +357,10 @@ const ManageAchievements = () => {
 
           <Input
             label="Display Order"
+            name="display_order"
             type="number"
             value={formData.display_order}
-            onChange={(e) => setFormData({ ...formData, display_order: parseInt(e.target.value) })}
+            onChange={handleChange}
             placeholder="0"
           />
 

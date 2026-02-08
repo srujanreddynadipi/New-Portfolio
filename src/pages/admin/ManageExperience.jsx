@@ -93,6 +93,24 @@ const ManageExperience = () => {
     setError(null)
   }
 
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target
+    setFormData(prev => {
+      // Special handling for "current" checkbox
+      if (name === 'current' && type === 'checkbox') {
+        return {
+          ...prev,
+          current: checked,
+          end_date: checked ? '' : prev.end_date
+        }
+      }
+      return {
+        ...prev,
+        [name]: type === 'checkbox' ? checked : value
+      }
+    })
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     setSubmitting(true)
@@ -279,8 +297,9 @@ const ManageExperience = () => {
               Type
             </label>
             <select
+              name="type"
               value={formData.type}
-              onChange={(e) => setFormData({ ...formData, type: e.target.value })}
+              onChange={handleChange}
               className="w-full px-4 py-2 bg-white dark:bg-dark-800 border border-gray-300 dark:border-dark-600 rounded-lg focus:ring-2 focus:ring-primary-500"
               required
             >
@@ -292,45 +311,50 @@ const ManageExperience = () => {
 
           <Input
             label="Role/Position"
+            name="role"
             type="text"
             value={formData.role}
-            onChange={(e) => setFormData({ ...formData, role: e.target.value })}
+            onChange={handleChange}
             required
             placeholder="e.g., Full Stack Developer"
           />
 
           <Input
             label="Company"
+            name="company"
             type="text"
             value={formData.company}
-            onChange={(e) => setFormData({ ...formData, company: e.target.value })}
+            onChange={handleChange}
             required
             placeholder="e.g., Tech Company Inc."
           />
 
           <Input
             label="Location"
+            name="location"
             type="text"
             value={formData.location}
-            onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+            onChange={handleChange}
             placeholder="e.g., Remote, New York, etc."
           />
 
           <div className="grid grid-cols-2 gap-4">
             <Input
               label="Start Date"
+              name="start_date"
               type="text"
               value={formData.start_date}
-              onChange={(e) => setFormData({ ...formData, start_date: e.target.value })}
+              onChange={handleChange}
               required
               placeholder="e.g., Jan 2024"
             />
 
             <Input
               label="End Date"
+              name="end_date"
               type="text"
               value={formData.end_date}
-              onChange={(e) => setFormData({ ...formData, end_date: e.target.value })}
+              onChange={handleChange}
               placeholder="e.g., Dec 2024"
               disabled={formData.current}
             />
@@ -338,9 +362,10 @@ const ManageExperience = () => {
 
           <Input
             label="Duration"
+            name="duration"
             type="text"
             value={formData.duration}
-            onChange={(e) => setFormData({ ...formData, duration: e.target.value })}
+            onChange={handleChange}
             required
             placeholder="e.g., Jan 2024 - Dec 2024"
           />
@@ -349,8 +374,9 @@ const ManageExperience = () => {
             <input
               type="checkbox"
               id="current"
+              name="current"
               checked={formData.current}
-              onChange={(e) => setFormData({ ...formData, current: e.target.checked, end_date: e.target.checked ? '' : formData.end_date })}
+              onChange={handleChange}
               className="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500"
             />
             <label htmlFor="current" className="ml-2 text-sm text-gray-700 dark:text-gray-300">
@@ -360,33 +386,37 @@ const ManageExperience = () => {
 
           <Textarea
             label="Description"
+            name="description"
             value={formData.description}
-            onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+            onChange={handleChange}
             placeholder="Brief description of the role"
             rows={3}
           />
 
           <Textarea
             label="Responsibilities (one per line)"
+            name="responsibilities"
             value={formData.responsibilities}
-            onChange={(e) => setFormData({ ...formData, responsibilities: e.target.value })}
+            onChange={handleChange}
             placeholder="Developed features&#10;Collaborated with team&#10;Implemented solutions"
             rows={5}
           />
 
           <Input
             label="Technologies (comma-separated)"
+            name="technologies"
             type="text"
             value={formData.technologies}
-            onChange={(e) => setFormData({ ...formData, technologies: e.target.value })}
+            onChange={handleChange}
             placeholder="React, Node.js, MongoDB, Docker"
           />
 
           <Input
             label="Display Order"
+            name="display_order"
             type="number"
             value={formData.display_order}
-            onChange={(e) => setFormData({ ...formData, display_order: parseInt(e.target.value) })}
+            onChange={handleChange}
             placeholder="0"
           />
 

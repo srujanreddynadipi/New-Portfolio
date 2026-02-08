@@ -2,10 +2,12 @@ import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Plus, Edit2, Trash2, Save, X, Trophy, Award, Medal, Star } from 'lucide-react'
 import { achievementsService } from '../../services/achievementsService'
+import { uploadFile, isValidImageFile } from '../../utils/storageUtils'
 import Card from '../../components/ui/Card'
 import Button from '../../components/ui/Button'
 import Input from '../../components/ui/Input'
 import Textarea from '../../components/ui/Textarea'
+import FileUpload from '../../components/ui/FileUpload'
 import Spinner from '../../components/ui/Spinner'
 import Modal from '../../components/ui/Modal'
 
@@ -14,12 +16,14 @@ const ManageAchievements = () => {
   const [loading, setLoading] = useState(true)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [editingAchievement, setEditingAchievement] = useState(null)
+  const [imageFile, setImageFile] = useState(null)
   const [formData, setFormData] = useState({
     title: '',
     date: '',
     description: '',
     category: 'Hackathon',
     icon: 'trophy',
+    image: '',
     display_order: 0,
   })
   const [submitting, setSubmitting] = useState(false)
@@ -56,22 +60,26 @@ const ManageAchievements = () => {
   const handleOpenModal = (achievement = null) => {
     if (achievement) {
       setEditingAchievement(achievement)
+      setImageFile(achievement.image || null)
       setFormData({
         title: achievement.title,
         date: achievement.date,
         description: achievement.description,
         category: achievement.category || 'Hackathon',
         icon: achievement.icon || 'trophy',
+        image: achievement.image || '',
         display_order: achievement.display_order || 0,
       })
     } else {
       setEditingAchievement(null)
+      setImageFile(null)
       setFormData({
         title: '',
         date: '',
         description: '',
         category: 'Hackathon',
         icon: 'trophy',
+        image: '',
         display_order: 0,
       })
     }
@@ -91,11 +99,31 @@ const ManageAchievements = () => {
     setError(null)
 
     try {
+      let imageUrl = formData.image
+
+      // Upload new image if file is selected
+      if (imageFile && typeof imageFile !== 'string') {
+        if (!isValidImageFile(imageFile)) {
+          setError('Please select a valid image file (PNG, JPG, GIF, WEBP)')
+          setSubmitting(false)
+          return
+        }
+
+        const { data, error: uploadError } = await uploadFile(imageFile, 'images', 'achievements')
+        if (uploadError) throw new Error(uploadError)
+        imageUrl = data.publicUrl
+      }
+
+      const achievementData = {
+        ...formData,
+        image: imageUrl,
+      }
+
       if (editingAchievement) {
-        const { error } = await achievementsService.updateAchievement(editingAchievement.id, formData)
+        const { error } = await achievementsService.updateAchievement(editingAchievement.id, achievementData)
         if (error) throw new Error(error)
       } else {
-        const { error } = await achievementsService.createAchievement(formData)
+        const { error } = await achievementsService.createAchievement(achievementData)
         if (error) throw new Error(error)
       }
 
@@ -306,6 +334,14 @@ const ManageAchievements = () => {
               })}
             </div>
           </div>
+
+          <FileUpload
+            label="Achievement Image (Optional)"
+            file={imageFile}
+            onFileChange={setImageFile}
+            accept="image/*"
+            helpText="Upload an image of your achievement certificate or award"
+          />
 
           <Input
             label="Display Order"

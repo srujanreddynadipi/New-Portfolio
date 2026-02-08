@@ -29,31 +29,52 @@ const AchievementCard = ({ achievement, index }) => {
 
       {/* Content */}
       <div className="relative z-10 flex flex-col h-full">
-        {/* Icon */}
-        <motion.div
-          whileHover={{
-            rotate: [0, -10, 10, -10, 0],
-            scale: 1.15,
-          }}
-          transition={{ duration: 0.6 }}
-          className="w-16 h-16 rounded-2xl bg-gradient-to-br from-yellow-400 to-yellow-600 dark:from-yellow-500 dark:to-yellow-700 flex items-center justify-center mb-4 shadow-lg group-hover:shadow-yellow-500/50 transition-shadow relative"
-        >
-          <Trophy className="w-8 h-8 text-white" />
-          {/* Shine Effect */}
+        {/* Achievement Image or Icon */}
+        {achievement.image ? (
           <motion.div
-            animate={{
-              x: [-100, 100],
-              opacity: [0, 1, 0],
+            whileHover={{ scale: 1.05 }}
+            transition={{ duration: 0.3 }}
+            className="w-full h-48 rounded-xl overflow-hidden mb-4 shadow-lg group-hover:shadow-yellow-500/50 transition-shadow"
+          >
+            <img
+              src={achievement.image}
+              alt={achievement.title || achievement.name}
+              className="w-full h-full object-cover"
+              onError={(e) => {
+                e.target.style.display = 'none'
+                e.target.nextSibling.style.display = 'flex'
+              }}
+            />
+            <div className="w-full h-full rounded-xl bg-gradient-to-br from-yellow-400 to-yellow-600 dark:from-yellow-500 dark:to-yellow-700 flex items-center justify-center" style={{ display: 'none' }}>
+              <Trophy className="w-12 h-12 text-white" />
+            </div>
+          </motion.div>
+        ) : (
+          <motion.div
+            whileHover={{
+              rotate: [0, -10, 10, -10, 0],
+              scale: 1.15,
             }}
-            transition={{
-              duration: 2,
-              repeat: Infinity,
-              repeatDelay: 3,
-              ease: 'easeInOut',
-            }}
-            className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
-          />
-        </motion.div>
+            transition={{ duration: 0.6 }}
+            className="w-16 h-16 rounded-2xl bg-gradient-to-br from-yellow-400 to-yellow-600 dark:from-yellow-500 dark:to-yellow-700 flex items-center justify-center mb-4 shadow-lg group-hover:shadow-yellow-500/50 transition-shadow relative"
+          >
+            <Trophy className="w-8 h-8 text-white" />
+            {/* Shine Effect */}
+            <motion.div
+              animate={{
+                x: [-100, 100],
+                opacity: [0, 1, 0],
+              }}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                repeatDelay: 3,
+                ease: 'easeInOut',
+              }}
+              className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
+            />
+          </motion.div>
+        )}
 
         {/* Title */}
         <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-3 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">

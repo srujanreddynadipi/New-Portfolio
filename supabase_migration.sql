@@ -119,6 +119,7 @@ CREATE TABLE IF NOT EXISTS achievements (
   description TEXT NOT NULL,
   category TEXT NOT NULL CHECK (category IN ('Hackathon', 'Certification', 'Award', 'Competition', 'Publication', 'Other')),
   icon TEXT DEFAULT 'trophy',
+  image TEXT,
   display_order INTEGER DEFAULT 0,
   is_active BOOLEAN DEFAULT true,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),

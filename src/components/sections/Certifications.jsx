@@ -34,14 +34,35 @@ const CertificationCard = ({ certification, index }) => {
 
       {/* Content */}
       <div className="relative z-10">
-        {/* Icon */}
-        <motion.div
-          whileHover={{ rotate: [0, -15, 15, -15, 0], scale: 1.15 }}
-          transition={{ duration: 0.6 }}
-          className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary-400 to-primary-600 dark:from-primary-500 dark:to-primary-700 flex items-center justify-center mb-4 shadow-lg group-hover:shadow-primary-500/50 transition-shadow"
-        >
-          <Award className="w-8 h-8 text-white" />
-        </motion.div>
+        {/* Certificate Image or Icon */}
+        {certification.image ? (
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            transition={{ duration: 0.3 }}
+            className="w-full h-48 rounded-xl overflow-hidden mb-4 shadow-lg group-hover:shadow-primary-500/50 transition-shadow"
+          >
+            <img
+              src={certification.image}
+              alt={certification.name || certification.title}
+              className="w-full h-full object-cover"
+              onError={(e) => {
+                e.target.style.display = 'none'
+                e.target.nextSibling.style.display = 'flex'
+              }}
+            />
+            <div className="w-full h-full rounded-xl bg-gradient-to-br from-primary-400 to-primary-600 dark:from-primary-500 dark:to-primary-700 flex items-center justify-center" style={{ display: 'none' }}>
+              <Award className="w-12 h-12 text-white" />
+            </div>
+          </motion.div>
+        ) : (
+          <motion.div
+            whileHover={{ rotate: [0, -15, 15, -15, 0], scale: 1.15 }}
+            transition={{ duration: 0.6 }}
+            className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary-400 to-primary-600 dark:from-primary-500 dark:to-primary-700 flex items-center justify-center mb-4 shadow-lg group-hover:shadow-primary-500/50 transition-shadow"
+          >
+            <Award className="w-8 h-8 text-white" />
+          </motion.div>
+        )}
 
         {/* Certificate Name */}
         <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors line-clamp-2 min-h-[3.5rem]">

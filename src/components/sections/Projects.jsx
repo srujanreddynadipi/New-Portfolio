@@ -32,7 +32,7 @@ const ProjectCard = ({ project, onClick, index }) => {
             <img
               src={project.image}
               alt={project.title}
-              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 relative z-10"
+              className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-700 relative z-10"
               onError={(e) => {
                 console.error('Image failed to load:', project.image)
                 e.target.style.display = 'none'
@@ -221,7 +221,7 @@ const ProjectModal = ({ project, onClose }) => {
                   <img
                     src={projectImages[currentImageIndex]}
                     alt={`${project.title} - Image ${currentImageIndex + 1}`}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-contain"
                   />
                   {/* Image Navigation */}
                   {projectImages.length > 1 && (
@@ -263,7 +263,7 @@ const ProjectModal = ({ project, onClose }) => {
                         <img
                           src={img}
                           alt={`Thumbnail ${idx + 1}`}
-                          className="w-full h-full object-cover"
+                          className="w-full h-full object-contain"
                         />
                       </button>
                     ))}

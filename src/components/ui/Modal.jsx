@@ -16,6 +16,7 @@ export const Modal = ({ isOpen, onClose, title, children, size = 'md' }) => {
   const modalRef = useRef(null)
   const titleId = useRef(generateAriaId('modal-title'))
   const descId = useRef(generateAriaId('modal-desc'))
+  const onCloseRef = useRef(onClose)
 
   // Size variants
   const sizeClasses = {
@@ -33,7 +34,7 @@ export const Modal = ({ isOpen, onClose, title, children, size = 'md' }) => {
 
       // ESC key handler
       const handleEsc = e => {
-        if (e.key === 'Escape') onClose()
+        if (e.key === 'Escape') onCloseRef.current()
       }
       document.addEventListener('keydown', handleEsc)
 
@@ -43,7 +44,11 @@ export const Modal = ({ isOpen, onClose, title, children, size = 'md' }) => {
         document.removeEventListener('keydown', handleEsc)
       }
     }
-  }, [isOpen, onClose])
+  }, [isOpen])
+
+  useEffect(() => {
+    onCloseRef.current = onClose
+  }, [onClose])
 
   return (
     <AnimatePresence>

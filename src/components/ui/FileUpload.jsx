@@ -72,7 +72,7 @@ const FileUpload = ({
                 <img
                   src={typeof currentFile === 'string' ? currentFile : URL.createObjectURL(currentFile)}
                   alt="Preview"
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-contain"
                 />
               </div>
             )}

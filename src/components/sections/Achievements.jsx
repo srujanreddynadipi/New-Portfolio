@@ -39,7 +39,7 @@ const AchievementCard = ({ achievement, index }) => {
             <img
               src={achievement.image}
               alt={achievement.title || achievement.name}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-contain bg-white dark:bg-dark-800"
               onError={(e) => {
                 e.target.style.display = 'none'
                 e.target.nextSibling.style.display = 'flex'

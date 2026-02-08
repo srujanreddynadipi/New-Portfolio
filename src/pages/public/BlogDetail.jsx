@@ -132,7 +132,7 @@ const BlogDetail = () => {
               <img
                 src={blog.cover_image || blog.image}
                 alt={blog.title}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-contain"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
             </div>

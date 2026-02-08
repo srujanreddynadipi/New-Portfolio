@@ -57,7 +57,12 @@ const Navbar = () => {
     { name: 'Contact', path: '/contact' },
   ]
 
-  const isActive = (path) => location.pathname === path
+  const isActive = (path) => {
+    if (path === '/') {
+      return location.pathname === '/' && !location.hash
+    }
+    return location.pathname === path
+  }
 
   return (
     <motion.nav

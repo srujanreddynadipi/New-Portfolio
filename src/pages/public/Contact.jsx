@@ -19,6 +19,8 @@ const Contact = () => {
     message: '',
   })
   const [loading, setLoading] = useState(false)
+  const [success, setSuccess] = useState(false)
+  const [submitError, setSubmitError] = useState(null)
   const [errors, setErrors] = useState({})
   const toast = useToast()
 
@@ -69,6 +71,8 @@ const Contact = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    setSuccess(false)
+    setSubmitError(null)
 
     // Rate limiting check
     if (!rateLimiter('contact-form', 3, 300000)) {
@@ -90,15 +94,18 @@ const Contact = () => {
       setLoading(false)
 
       if (error) {
+        setSubmitError(error)
         toast.error(error)
       } else {
         toast.success('Message sent successfully! I\'ll get back to you soon.')
         setFormData({ name: '', email: '', subject: '', message: '' })
         setErrors({})
+        setSuccess(true)
       }
     } catch (err) {
       setLoading(false)
       console.error('Contact form error:', err)
+      setSubmitError('Failed to send message. Please try again or contact directly via email.')
       toast.error('Failed to send message. Please try again or contact directly via email.')
     }
   }
@@ -234,10 +241,10 @@ const Contact = () => {
                   </div>
                 )}
 
-                {error && (
+                {submitError && (
                   <div className="p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
                     <p className="text-red-600 dark:text-red-400">
-                      Error sending message: {error}
+                      Error sending message: {submitError}
                     </p>
                   </div>
                 )}

@@ -1,16 +1,36 @@
+import { useEffect, useState } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { Download, ArrowRight, Code2, Sparkles } from 'lucide-react'
 import { portfolioData } from '../../data/data'
+import { resumeService } from '../../services/resumeService'
 
 const Hero = () => {
   const { hero, about, metadata } = portfolioData
   const { scrollY } = useScroll()
   const y = useTransform(scrollY, [0, 500], [0, 150])
+  const [resumeUrl, setResumeUrl] = useState(metadata.resumeUrl || null)
+
+  useEffect(() => {
+    let isMounted = true
+
+    const fetchResume = async () => {
+      const { data } = await resumeService.getLatestResume()
+      if (isMounted && data) {
+        setResumeUrl(data)
+      }
+    }
+
+    fetchResume()
+
+    return () => {
+      isMounted = false
+    }
+  }, [])
 
   const handleDownloadResume = () => {
-    const resumeUrl = metadata.resumeUrl || '#'
-    if (resumeUrl !== '#') {
-      window.open(resumeUrl, '_blank')
+    const resolvedUrl = resumeUrl || metadata.resumeUrl
+    if (resolvedUrl) {
+      window.open(resolvedUrl, '_blank')
     } else {
       alert('Resume will be available soon!')
     }

@@ -119,7 +119,7 @@ const ManageAchievements = () => {
 
         const { data, error: uploadError } = await uploadFile(imageFile, 'images', 'achievements')
         if (uploadError) throw new Error(uploadError)
-        imageUrl = data.publicUrl
+        imageUrl = data
       }
 
       const achievementData = {
@@ -349,10 +349,11 @@ const ManageAchievements = () => {
 
           <FileUpload
             label="Achievement Image (Optional)"
-            file={imageFile}
-            onFileChange={setImageFile}
+            currentFile={imageFile}
+            onFileSelect={setImageFile}
+            onRemove={() => setImageFile(null)}
             accept="image/*"
-            helpText="Upload an image of your achievement certificate or award"
+            preview={true}
           />
 
           <Input

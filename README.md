@@ -13,6 +13,15 @@ A production-ready, modern portfolio website built with React, Vite, Tailwind CS
 - 🛡️ **Error Handling**: Global error boundary and toast notifications
 - 📊 **Admin Panel**: Full content management system
 
+## ✅ Recent Updates (Feb 2026)
+
+- ✅ **Input focus stability**: Admin forms now keep cursor focus; modal focus trap no longer re-initializes on each render.
+- ✅ **Achievements image upload**: File upload wiring fixed and stored image URLs now save correctly.
+- ✅ **Resume download**: Hero download button pulls the latest resume from Supabase storage.
+- ✅ **Images show fully**: Project, certification, achievement, blog, and admin previews use full-fit images (hero profile image unchanged).
+- ✅ **Contact form robustness**: Proper success/error state handling and clearer submission feedback.
+- ✅ **Production config note**: Ensure `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` are set in your host (Vercel/Netlify) and that the `documents` bucket is public for resume downloads.
+
 ## 🚀 Quick Start
 
 ```bash

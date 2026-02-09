@@ -1,35 +1,34 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback, useMemo, memo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Github, ExternalLink, X, Calendar, Users, Code, Sparkles, Rocket, ChevronLeft, ChevronRight } from 'lucide-react'
 import { useProjects } from '../../hooks/usePortfolioData'
 import Spinner from '../ui/Spinner'
+import OptimizedImage from '../ui/OptimizedImage'
 
-// Project Card Component - Enhanced
-const ProjectCard = ({ project, onClick, index }) => {
+// Project Card Component - Optimized with memo
+const ProjectCard = memo(({ project, onClick, index }) => {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 50, scale: 0.9 }}
-      whileInView={{ opacity: 1, y: 0, scale: 1 }}
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-50px' }}
       transition={{
-        duration: 0.8,
-        delay: index * 0.2,
-        ease: [0.25, 0.46, 0.45, 0.94],
+        duration: 0.5,
+        delay: index * 0.1,
+        ease: 'easeOut',
       }}
-      whileHover={{ y: -8, scale: 1.01, transition: { duration: 0.3 } }}
+      whileHover={{ y: -6, transition: { duration: 0.2 } }}
       onClick={onClick}
-      className="glass-card overflow-hidden cursor-pointer group h-full flex flex-col relative"
+      className="glass-card overflow-hidden cursor-pointer group h-full flex flex-col relative will-change-transform"
     >
       {/* Hover Glow Effect */}
-      <motion.div 
-        className="absolute inset-0 bg-primary-400/0 group-hover:bg-primary-400/10 dark:group-hover:bg-primary-600/10 transition-all duration-300 rounded-xl z-0"
-      />
+      <div className="absolute inset-0 bg-primary-400/0 group-hover:bg-primary-400/10 dark:group-hover:bg-primary-600/10 transition-all duration-300 rounded-xl z-0" />
 
-      {/* Project Image - Enhanced */}
+      {/* Project Image - Optimized */}
       <div className="relative h-64 bg-gradient-to-br from-primary-400 via-primary-500 to-primary-600 dark:from-primary-600 dark:via-primary-700 dark:to-primary-800 overflow-hidden">
         {project.image ? (
           <>
-            <img
+            <OptimizedImage
               src={project.image}
               alt={project.title}
               className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-700 relative z-10"
@@ -37,46 +36,29 @@ const ProjectCard = ({ project, onClick, index }) => {
                 console.error('Image failed to load:', project.image)
                 e.target.style.display = 'none'
               }}
-              loading="lazy"
             />
             {/* Image Overlay */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent opacity-40 group-hover:opacity-60 transition-opacity duration-300 z-20" />
           </>
         ) : (
           <div className="absolute inset-0 flex items-center justify-center">
-            <motion.div
-              animate={{ rotate: [0, 360] }}
-              transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
-            >
-              <Code className="w-24 h-24 text-white/40" />
-            </motion.div>
+            <Code className="w-24 h-24 text-white/40" />
           </div>
         )}
         
-        {/* Overlay on Hover - Enhanced */}
-        <div className="absolute inset-0 bg-gradient-to-t from-primary-600/95 via-primary-500/70 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-end justify-center p-6">
-          <motion.p 
-            initial={{ y: 20, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            className="text-white text-sm font-bold flex items-center gap-2"
-          >
+        {/* Overlay on Hover */}
+        <div className="absolute inset-0 bg-gradient-to-t from-primary-600/95 via-primary-500/70 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-end justify-center p-6 z-30">
+          <p className="text-white text-sm font-bold flex items-center gap-2">
             <Sparkles className="w-4 h-4" />
             Click to view details
             <Sparkles className="w-4 h-4" />
-          </motion.p>
+          </p>
         </div>
 
-        {/* Status Badge - Enhanced */}
+        {/* Status Badge */}
         {project.status && (
-          <motion.div 
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ delay: 0.3, type: 'spring' }}
-            className="absolute top-4 right-4 z-10"
-          >
-            <motion.span 
-              whileHover={{ scale: 1.1 }}
-              className={`px-4 py-2 text-xs font-bold rounded-full shadow-lg backdrop-blur-sm flex items-center gap-1.5 ${
+          <div className="absolute top-4 right-4 z-10">
+            <span className={`px-4 py-2 text-xs font-bold rounded-full shadow-lg backdrop-blur-sm flex items-center gap-1.5 ${
               project.status === 'Completed'
                 ? 'bg-green-500/90 text-white'
                 : project.status === 'In Progress'
@@ -85,45 +67,33 @@ const ProjectCard = ({ project, onClick, index }) => {
             }`}>
               <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
               {project.status}
-            </motion.span>
-          </motion.div>
+            </span>
+          </div>
         )}
       </div>
 
-      {/* Card Content - Enhanced */}
+      {/* Card Content */}
       <div className="p-6 flex-1 flex flex-col relative z-10">
-        {/* Title - Enhanced */}
-        <motion.h3 
-          whileHover={{ x: 5 }}
-          className="text-2xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors flex items-center gap-2"
-        >
+        {/* Title */}
+        <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors flex items-center gap-2">
           {project.title}
-          <motion.div
-            animate={{ rotate: [0, 15, 0] }}
-            transition={{ duration: 2, repeat: Infinity }}
-          >
-            <Rocket className="w-5 h-5 text-primary-500" />
-          </motion.div>
-        </motion.h3>
+          <Rocket className="w-5 h-5 text-primary-500" />
+        </h3>
 
         {/* Description */}
         <p className="text-gray-600 dark:text-gray-400 text-base mb-5 line-clamp-2 flex-1 leading-relaxed">
           {project.description}
         </p>
 
-        {/* Technologies - Enhanced */}
+        {/* Technologies */}
         <div className="flex flex-wrap gap-2.5 mb-5">
           {((project.technologies || project.tech || []).slice(0, 4)).map((tech, idx) => (
-            <motion.span
+            <span
               key={idx}
-              initial={{ opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ delay: idx * 0.05 }}
-              whileHover={{ scale: 1.15, y: -3, rotate: [0, -3, 3, 0] }}
-              className="px-3 py-1.5 text-xs font-bold bg-gradient-to-br from-primary-50 to-primary-100 dark:from-primary-900/40 dark:to-primary-800/40 text-primary-700 dark:text-primary-300 rounded-lg border-2 border-primary-300 dark:border-primary-700 hover:border-primary-500 dark:hover:border-primary-500 hover:shadow-lg hover:shadow-primary-500/30 transition-all"
+              className="px-3 py-1.5 text-xs font-bold bg-gradient-to-br from-primary-50 to-primary-100 dark:from-primary-900/40 dark:to-primary-800/40 text-primary-700 dark:text-primary-300 rounded-lg border-2 border-primary-300 dark:border-primary-700"
             >
               {tech}
-            </motion.span>
+            </span>
           ))}
           {(project.technologies || project.tech || []).length > 4 && (
             <span className="px-3 py-1.5 text-xs font-semibold text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-800 rounded-lg">
@@ -132,13 +102,11 @@ const ProjectCard = ({ project, onClick, index }) => {
           )}
         </div>
 
-        {/* Footer - Enhanced */}
+        {/* Footer */}
         <div className="flex items-center justify-between pt-5 border-t-2 border-gray-200 dark:border-gray-700">
           <div className="flex gap-4">
             {(project.githubUrl || project.github_url) && (
-              <motion.a
-                whileHover={{ scale: 1.15, rotate: 5 }}
-                whileTap={{ scale: 0.95 }}
+              <a
                 href={project.githubUrl || project.github_url}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -147,12 +115,10 @@ const ProjectCard = ({ project, onClick, index }) => {
                 aria-label="View GitHub repository"
               >
                 <Github className="w-6 h-6" />
-              </motion.a>
+              </a>
             )}
             {(project.liveUrl || project.live_url) && (
-              <motion.a
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.95 }}
+              <a
                 href={project.liveUrl || project.live_url}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -161,7 +127,7 @@ const ProjectCard = ({ project, onClick, index }) => {
                 aria-label="View live demo"
               >
                 <ExternalLink className="w-5 h-5" />
-              </motion.a>
+              </a>
             )}
           </div>
           
@@ -175,16 +141,33 @@ const ProjectCard = ({ project, onClick, index }) => {
       </div>
     </motion.div>
   )
-}
+})
 
-// Project Modal Component
-const ProjectModal = ({ project, onClose }) => {
-  const [currentImageIndex, setCurrentImageIndex] = React.useState(0)
+ProjectCard.displayName = 'ProjectCard'
+
+// Project Modal Component - Optimized with memo
+const ProjectModal = memo(({ project, onClose }) => {
+  const [currentImageIndex, setCurrentImageIndex] = useState(0)
   
   if (!project) return null
 
-  const projectImages = project.images || (project.image ? [project.image] : [])
-  const technologies = project.technologies || project.tech || []
+  const projectImages = useMemo(() => 
+    project.images || (project.image ? [project.image] : []), 
+    [project.images, project.image]
+  )
+  
+  const technologies = useMemo(() => 
+    project.technologies || project.tech || [], 
+    [project.technologies, project.tech]
+  )
+
+  const handlePrevImage = useCallback(() => {
+    setCurrentImageIndex((prev) => (prev === 0 ? projectImages.length - 1 : prev - 1))
+  }, [projectImages.length])
+
+  const handleNextImage = useCallback(() => {
+    setCurrentImageIndex((prev) => (prev === projectImages.length - 1 ? 0 : prev + 1))
+  }, [projectImages.length])
 
   return (
     <AnimatePresence>
@@ -218,23 +201,24 @@ const ProjectModal = ({ project, onClose }) => {
             {projectImages.length > 0 ? (
               <div className="relative">
                 <div className="relative h-80 md:h-96 bg-gradient-to-br from-primary-400 to-primary-600 dark:from-primary-600 dark:to-primary-800">
-                  <img
+                  <OptimizedImage
                     src={projectImages[currentImageIndex]}
                     alt={`${project.title} - Image ${currentImageIndex + 1}`}
                     className="w-full h-full object-contain"
+                    eager={true}
                   />
                   {/* Image Navigation */}
                   {projectImages.length > 1 && (
                     <>
                       <button
-                        onClick={() => setCurrentImageIndex((prev) => (prev === 0 ? projectImages.length - 1 : prev - 1))}
+                        onClick={handlePrevImage}
                         className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 dark:bg-gray-800/90 hover:bg-white dark:hover:bg-gray-700 transition-colors flex items-center justify-center shadow-lg"
                         aria-label="Previous image"
                       >
                         <ChevronLeft className="w-6 h-6 text-gray-900 dark:text-white" />
                       </button>
                       <button
-                        onClick={() => setCurrentImageIndex((prev) => (prev === projectImages.length - 1 ? 0 : prev + 1))}
+                        onClick={handleNextImage}
                         className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 dark:bg-gray-800/90 hover:bg-white dark:hover:bg-gray-700 transition-colors flex items-center justify-center shadow-lg"
                         aria-label="Next image"
                       >
@@ -406,11 +390,33 @@ const ProjectModal = ({ project, onClose }) => {
       </motion.div>
     </AnimatePresence>
   )
-}
+})
+
+ProjectModal.displayName = 'ProjectModal'
 
 const Projects = () => {
   const [selectedProject, setSelectedProject] = useState(null)
   const { data: projects, loading, error } = useProjects()
+
+  // Memoize project click handler
+  const handleProjectClick = useCallback((project) => {
+    setSelectedProject(project)
+  }, [])
+
+  const handleCloseModal = useCallback(() => {
+    setSelectedProject(null)
+  }, [])
+
+  // Memoize container variants
+  const containerVariants = useMemo(() => ({
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+  }), [])
 
   // Show loading spinner
   if (loading) {
@@ -424,16 +430,6 @@ const Projects = () => {
   }
 
   if (error) console.error('Projects error:', error)
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-      },
-    },
-  }
 
   return (
     <>
@@ -507,26 +503,23 @@ const Projects = () => {
           >
             {projects.map((project, index) => (
               <ProjectCard
-                key={index}
+                key={project.id || index}
                 project={project}
                 index={index}
-                onClick={() => setSelectedProject(project)}
+                onClick={() => handleProjectClick(project)}
               />
             ))}
           </motion.div>
 
           {/* Empty State */}
           {projects.length === 0 && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="text-center py-20"
+            <div className="text-center py-20"
             >
               <Code className="w-20 h-20 text-gray-300 dark:text-gray-700 mx-auto mb-4" />
               <p className="text-gray-500 dark:text-gray-400">
                 No projects available yet. Check back soon!
               </p>
-            </motion.div>
+            </div>
           )}
         </div>
       </section>
@@ -535,7 +528,7 @@ const Projects = () => {
       {selectedProject && (
         <ProjectModal
           project={selectedProject}
-          onClose={() => setSelectedProject(null)}
+          onClose={handleCloseModal}
         />
       )}
     </>

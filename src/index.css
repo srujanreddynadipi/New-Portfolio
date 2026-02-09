@@ -3,6 +3,17 @@
 @tailwind utilities;
 
 @layer base {
+  /* Optimize font loading with font-display */
+  @font-face {
+    font-family: 'Inter';
+    font-display: swap;
+  }
+  
+  @font-face {
+    font-family: 'Poppins';
+    font-display: swap;
+  }
+
   body {
     @apply bg-white dark:bg-dark-900 text-gray-900 dark:text-gray-100;
     @apply transition-colors duration-300;
@@ -17,6 +28,15 @@
   body,
   #root {
     min-height: 100vh;
+  }
+
+  /* Optimize will-change for animations */
+  .will-change-transform {
+    will-change: transform;
+  }
+
+  .will-change-opacity {
+    will-change: opacity;
   }
 }
 
